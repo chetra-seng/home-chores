@@ -34,6 +34,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"google-auth-library": "^9.0.0"
+		"@notionhq/client": "^2.2.10",
+		"@tanstack/svelte-query": "^4.32.6",
+		"@types/moment": "^2.13.0",
+		"google-auth-library": "^9.0.0",
+		"moment": "^2.29.4"
 	}
 }

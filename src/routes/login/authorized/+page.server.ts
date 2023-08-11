@@ -1,7 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
-import { OAuth2Client } from 'google-auth-library';
-import { env } from '$env/dynamic/private';
 import type { PageServerLoad } from './$types';
+import { oAuthClient } from '$lib';
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const code = url.searchParams.get('code');
@@ -9,29 +8,21 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		return error(400, 'Invalid code');
 	}
 
-	const oAuthClient = new OAuth2Client(
-		env.GOOGLE_CLIENT_ID,
-		env.GOOGLE_CLIENT_SECRET,
-		env.GOOGLE_REDIRECT_URL
-	);
-
 	const r = await oAuthClient.getToken(code);
-	console.log(r.tokens);
-	console.log(new Date().getTime());
 
+	/**
+	 * * Wanted to set cookie sameSite="strict"
+	 * * Doing so, create a small redirection bug to /login page
+	 */
 	cookies.set('access_token', r.tokens.access_token || '', {
-		sameSite: 'strict',
+		// * doing to actually fixed the problem, but not sure why
+		// * better reading this reference
+		// https://stackoverflow.com/questions/59990864/what-is-the-difference-between-samesite-lax-and-samesite-strict
+		sameSite: 'lax',
 		httpOnly: true,
 		path: '/',
 		maxAge: 60 * 50
 	});
 
-	cookies.set('refresh_token', r.tokens.refresh_token || '', {
-		sameSite: 'strict',
-		httpOnly: true,
-		path: '/',
-		maxAge: 60 * 60 * 2
-	});
-
-	throw redirect(302, '/');
+	throw redirect(301, '/');
 };

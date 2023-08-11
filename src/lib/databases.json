@@ -1,0 +1,18 @@
+[
+    {
+        "label": "Kitchen",
+        "id": "d2173a220cb04cb69a3ffaebafb4e94e"
+    },
+    {
+        "label": "Bathroom",
+        "id": "8224305831584ef7bd090b9d242adf87"
+    },
+    {
+        "label": "Floor",
+        "id": "b723cc77a5c54ece8eaf65f2620ae496"
+    },
+    {
+        "label": "Spider web",
+        "id": "7f1222f5fe624004ae99841b9ab167c5"
+    }
+]
