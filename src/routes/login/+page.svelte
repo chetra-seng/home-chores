@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Login - Home Chores</title>
+</svelte:head>
+
 <div class="flex flex-col justify-center h-screen">
 	<div
 		class="card w-96 bg-neutral text-neutral-content mx-auto"

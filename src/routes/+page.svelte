@@ -68,10 +68,13 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Chore Schedules</title>
+</svelte:head>
 <main class="text-neutral-content mx-auto">
 	<div class="flex flex-col py-8 justify-center">
 		<div class="flex flex-col gap-5 items-center text-center prose-lg mx-auto">
-			<h1>Welcome Home Chores</h1>
+			<h1>Chore Schedules</h1>
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row justify-start w-[50%] gap-20">
 					<select class="select w-full select-sm" on:change={handleDbChange}>

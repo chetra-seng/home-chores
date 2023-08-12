@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ parent, fetch }) => {
 	const { queryClient } = await parent();
 
 	let selectedDb = databases[0].id;
-	let nextCusor: string | undefined;
+	let nextCusor: string | null = null
 	db.subscribe((value) => {
 		selectedDb = value;
 	});

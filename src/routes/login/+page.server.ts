@@ -5,7 +5,7 @@ import type { PageServerLoad } from '../$types';
 export const actions = {
 	auth: async () => {
 		const url = oAuthClient.generateAuthUrl({
-			scope: ['email']
+			scope: ['email'],
 		});
 		throw redirect(302, url);
 	}
