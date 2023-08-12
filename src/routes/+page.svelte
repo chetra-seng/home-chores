@@ -77,21 +77,21 @@
 			<h1>Chore Schedules</h1>
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row justify-start w-[50%] gap-20">
-					<select class="select w-full select-sm" on:change={handleDbChange}>
+					<select class="select select-bordered w-full select-sm" on:change={handleDbChange}>
 						{#each databases as database}
 							<option value={database.id}>{database.label}</option>
 						{/each}
 					</select>
 				</div>
 				<div
-					class="overflow-x-auto border-[1px] border-solid border-gray-500 rounded-lg min-w-[60vw] min-h-[40vh]"
+					class="overflow-x-auto border-[1px] border-solid border-gray-500 rounded-lg min-w-[60vw] min-h-[40vh] max-w-[95vw]"
 				>
 					{#if $query.isFetching}
 						<div class="flex flex-col h-[40vh] justify-center">
 							<span class="loading loading-spinner loading-lg text-primary mx-auto" />
 						</div>
 					{:else if $query.isFetched}
-						<div class="table table-lg">
+						<div class="table table-sm md:table-md lg:table-lg">
 							<thead>
 								<tr class="text-center">
 									<th />
