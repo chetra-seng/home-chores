@@ -9,7 +9,6 @@
 	let selectedDb = '';
 	let nextCursor: null | string = null;
 	let currentPage = 0;
-	let oldCursors: string[] = [];
 
 	db.subscribe((value) => {
 		selectedDb = value;
@@ -73,8 +72,12 @@
 </svelte:head>
 <main class="text-neutral-content mx-auto">
 	<div class="flex flex-col py-8 justify-center">
-		<div class="flex flex-col gap-5 items-center text-center prose-lg mx-auto">
-			<h1>Chore Schedules</h1>
+		<div class="flex flex-col gap-5 items-center prose-lg mx-auto">
+			<h3 class="px-2 self-start">Hello, {data.name}!</h3>
+			<p class="px-2 self-start">
+				View the schedule below. You can switch between chore schedules as well such as bathroom,
+				kitchen, and so on. Edit your task if you have completed your chores 😉.
+			</p>
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row justify-start w-[50%] gap-20">
 					<select class="select select-bordered w-full select-sm" on:change={handleDbChange}>
@@ -104,7 +107,7 @@
 							<tbody>
 								{#each $query.data.result as d, index}
 									<tr class="hover">
-										<td>{((currentPage - 1 ) * 10) + (index + 1)}</td>
+										<td>{(currentPage - 1) * 10 + (index + 1)}</td>
 										<td>{d?.name}</td>
 										<td>{d?.date ? moment(d?.date).format('MMMM Do YYYY, h:mm:ss a') : ''}</td>
 										<td class="text-center">

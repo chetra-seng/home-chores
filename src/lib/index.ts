@@ -20,7 +20,7 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 	const dbContent = await notion.databases.query({
 		database_id: dbId,
 		page_size: 10,
-		start_cursor: cursor !== "null" && cursor.length > 0 ? cursor : undefined,
+		start_cursor: cursor !== 'null' && cursor.length > 0 ? cursor : undefined,
 		sorts: [
 			{
 				property: 'Done',
@@ -94,6 +94,38 @@ const updateSchedule = async (dbId: string, pageId: string) => {
 	}
 };
 
+const getAuthUsers = async (dbId: string) => {
+	const userDb = await notion.databases.query({
+		database_id: dbId,
+		filter: {
+			property: 'Status',
+			select: {
+				equals: 'Active'
+			}
+		}
+	});
+
+	const result = userDb.results.map((result) => {
+		if (isFullPageOrDatabase(result)) {
+			const nameProps = result.properties['Name'];
+			const emailProps = result.properties['Gmail'];
+
+			return {
+				name:
+					nameProps.type === 'title' && nameProps.title instanceof Array
+						? nameProps.title[0].plain_text
+						: 'none',
+				email:
+					emailProps.type === 'email' && typeof emailProps.email === 'string'
+						? emailProps.email
+						: 'none'
+			};
+		}
+	});
+
+	return { users: result };
+};
+
 eventEmitter.on('scheduleUpdated', async (e: { dbId: string; name: string }) => {
 	const newPage = await notion.pages.create({
 		parent: {
@@ -115,4 +147,4 @@ eventEmitter.on('scheduleUpdated', async (e: { dbId: string; name: string }) => 
 	console.info(`New page created id=${newPage.id}`);
 });
 
-export { oAuthClient, getChoreSchedules, updateSchedule };
+export { oAuthClient, getChoreSchedules, updateSchedule, getAuthUsers };

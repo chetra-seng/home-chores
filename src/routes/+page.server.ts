@@ -3,10 +3,11 @@ import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const access_token = cookies.get('access_token');
+	const name = cookies.get('name');
 
 	if (!access_token || access_token.length === 0) {
 		throw redirect(302, '/login');
 	}
 
-	return {};
+	return { name };
 };
