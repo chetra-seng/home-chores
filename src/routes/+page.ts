@@ -18,7 +18,7 @@ export const load: PageLoad = async ({ parent, fetch, data }) => {
 	// You need to use the SvelteKit fetch function here
 	await queryClient.prefetchQuery({
 		queryKey: ['schedules', selectedDb, nextCusor],
-		queryFn: async () => (await fetch(`/?db=${selectedDb}&cursor=${nextCusor}`)).json()
+		queryFn: async () => (await fetch(`/?db=${selectedDb}&cursor=${nextCusor}`)).json(),
 	});
 
 	return { queryClient, name };

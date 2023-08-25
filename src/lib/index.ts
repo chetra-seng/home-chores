@@ -13,7 +13,7 @@ const oAuthClient = new OAuth2Client(
 );
 
 const notion = new Client({
-	auth: env.NOTION_CLIENT_SECRET
+	auth: env.NOTION_CLIENT_SECRET,
 });
 
 const getChoreSchedules = async (dbId: string, cursor: string) => {
@@ -24,13 +24,13 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 		sorts: [
 			{
 				property: 'Done',
-				direction: 'ascending'
+				direction: 'ascending',
 			},
 			{
 				property: 'Created time',
-				direction: 'ascending'
-			}
-		]
+				direction: 'ascending',
+			},
+		],
 	});
 
 	const result = dbContent.results.map((result) => {
@@ -46,7 +46,7 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 						? nameProps.title[0].plain_text
 						: '',
 				date: dateProps.type === 'date' ? dateProps.date?.start : null,
-				completed: doneProps.type === 'checkbox' && doneProps.checkbox ? true : false
+				completed: doneProps.type === 'checkbox' && doneProps.checkbox ? true : false,
 			};
 		}
 	});
@@ -55,8 +55,8 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 		result: result,
 		pagination: {
 			has_more: dbContent.has_more,
-			next_cursor: dbContent.next_cursor
-		}
+			next_cursor: dbContent.next_cursor,
+		},
 	};
 };
 
@@ -70,15 +70,15 @@ const updateSchedule = async (dbId: string, pageId: string) => {
 					// @ts-ignore
 					date: {
 						start: moment().add(7, 'hours').toDate(),
-						time_zone: 'Asia/Bangkok'
-					}
+						time_zone: 'Asia/Bangkok',
+					},
 				},
 				Done: {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
-					checkbox: true
-				}
-			}
+					checkbox: true,
+				},
+			},
 		});
 		console.info('Updaed page:', updatedPage);
 		const nameProps = isFullPageOrDatabase(updatedPage) ? updatedPage.properties['Name'] : null;
@@ -87,7 +87,7 @@ const updateSchedule = async (dbId: string, pageId: string) => {
 			name:
 				nameProps !== null && nameProps.type === 'title' && nameProps.title instanceof Array
 					? nameProps.title[0].plain_text
-					: ''
+					: '',
 		});
 	} catch (err) {
 		console.log('Update schedule err:', err);
@@ -100,9 +100,9 @@ const getAuthUsers = async (dbId: string) => {
 		filter: {
 			property: 'Status',
 			select: {
-				equals: 'Active'
-			}
-		}
+				equals: 'Active',
+			},
+		},
 	});
 
 	const result = userDb.results.map((result) => {
@@ -118,7 +118,7 @@ const getAuthUsers = async (dbId: string) => {
 				email:
 					emailProps.type === 'email' && typeof emailProps.email === 'string'
 						? emailProps.email
-						: 'none'
+						: 'none',
 			};
 		}
 	});
@@ -129,19 +129,19 @@ const getAuthUsers = async (dbId: string) => {
 eventEmitter.on('scheduleUpdated', async (e: { dbId: string; name: string }) => {
 	const newPage = await notion.pages.create({
 		parent: {
-			database_id: e.dbId
+			database_id: e.dbId,
 		},
 		properties: {
 			Name: {
 				title: [
 					{
 						text: {
-							content: e.name
-						}
-					}
-				]
-			}
-		}
+							content: e.name,
+						},
+					},
+				],
+			},
+		},
 	});
 
 	console.info(`New page created id=${newPage.id}`);

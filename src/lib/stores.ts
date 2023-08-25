@@ -6,7 +6,7 @@ const createDb = () => {
 
 	return {
 		subscribe,
-		set
+		set,
 	};
 };
 
@@ -17,7 +17,7 @@ const createPage = () => {
 		subscribe,
 		increment: () => update((n) => n + 1),
 		decrement: () => update((n) => n - 1),
-		reset: () => set(1)
+		reset: () => set(1),
 	};
 };
 
@@ -34,7 +34,7 @@ const createPrevCursors = () => {
 		subscribe,
 		push: (cursor: string) => update((prev) => [...prev, cursor]),
 		pop: () => update((prev) => prev.slice(0, prev.length - 1)),
-		reset: () => set([])
+		reset: () => set([]),
 	};
 };
 

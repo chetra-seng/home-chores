@@ -28,10 +28,10 @@
 		queryFn: async () => {
 			const res = await fetch(`/?db=${selectedDb}&cursor=${nextCursor}`);
 			return await res.json();
-		}
+		},
 	});
 
-	let selected: string = '';
+	let selected = '';
 	const mutation = createMutation({
 		mutationKey: ['update-schedule', selected, selectedDb],
 		mutationFn: async () => {
@@ -39,14 +39,14 @@
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				}
+					'Content-Type': 'application/json',
+				},
 			});
 		},
 		onSuccess: () => {
 			data.queryClient.invalidateQueries(['schedules']);
 			handleDialogClose();
-		}
+		},
 	});
 
 	const handleDialogOpen = () => {

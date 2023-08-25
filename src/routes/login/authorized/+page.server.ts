@@ -33,7 +33,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 				sameSite: 'lax',
 				httpOnly: true,
 				path: '/',
-				maxAge: 60 * 50
+				maxAge: 60 * 50,
 			} as any;
 			cookies.set('access_token', r.tokens.access_token || '', cookieOpts);
 

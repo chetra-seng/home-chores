@@ -23,9 +23,10 @@
 			</div>
 			<div class="card-body gap-6">
 				<p>
-					Ensuring Security: Only authorized users have access to <span class="font-bold">Home Chores</span>, a scheduling app
-					designed for Chetra Seng's household. If you believe you should have access, please inform
-					us. Your cooperation is appreciated.
+					Ensuring Security: Only authorized users have access to <span class="font-bold"
+						>Home Chores</span
+					>, a scheduling app designed for Chetra Seng's household. If you believe you should have
+					access, please inform us. Your cooperation is appreciated.
 				</p>
 				<form method="post" action="?/auth">
 					<button class="btn btn-primary" type="submit">Login with google</button>

@@ -8,7 +8,7 @@ export const actions = {
 			scope: ['email'],
 		});
 		throw redirect(302, url);
-	}
+	},
 };
 
 export const load: PageServerLoad = async ({ cookies }) => {
