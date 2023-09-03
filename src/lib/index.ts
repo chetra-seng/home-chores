@@ -27,6 +27,10 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 				direction: 'ascending',
 			},
 			{
+				property: 'Completed Date',
+				direction: "descending"
+			},
+			{
 				property: 'Created time',
 				direction: 'ascending',
 			},
