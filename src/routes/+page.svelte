@@ -65,6 +65,7 @@
 		prevCursors.reset();
 		cursor.reset();
 	};
+
 </script>
 
 <svelte:head>
@@ -102,6 +103,7 @@
 									<th>Completed Date</th>
 									<th>Status</th>
 									<th>Action</th>
+									<th>Updated By</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -126,6 +128,7 @@
 												}}>Edit</button
 											>
 										</td>
+										<td>{d?.updatedBy}</td>
 									</tr>
 								{/each}
 							</tbody>
