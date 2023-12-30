@@ -1,14 +1,4 @@
 import { writable } from 'svelte/store';
-import databases from '$lib/databases.json';
-
-const createDb = () => {
-	const { subscribe, set } = writable(databases[0].id);
-
-	return {
-		subscribe,
-		set,
-	};
-};
 
 const createPage = () => {
 	const { subscribe, update, set } = writable(1);
@@ -38,7 +28,6 @@ const createPrevCursors = () => {
 	};
 };
 
-export const db = createDb();
 export const page = createPage();
 export const cursor = createCursor();
 export const prevCursors = createPrevCursors();

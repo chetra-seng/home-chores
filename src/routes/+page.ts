@@ -1,16 +1,13 @@
 import type { PageLoad } from './$types';
 import databases from '$lib/databases.json';
-import { cursor, db } from '$lib/stores';
+import { cursor } from '$lib/stores';
 
-export const load: PageLoad = async ({ parent, fetch, data }) => {
+export const load: PageLoad = async ({ parent, fetch, data, url }) => {
 	const { queryClient } = await parent();
 	const { name } = data;
 
-	let selectedDb = databases[0].id;
+	let selectedDb = url.searchParams.get("db") || databases[0].id;
 	let nextCusor: string | null = null;
-	db.subscribe((value) => {
-		selectedDb = value;
-	});
 	cursor.subscribe((value) => {
 		nextCusor = value;
 	});

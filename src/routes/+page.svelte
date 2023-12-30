@@ -1,20 +1,18 @@
 <script lang="ts">
+	import {page} from "$app/stores";
 	import moment from 'moment';
 	import { createMutation, createQuery } from '@tanstack/svelte-query';
 	import databases from '$lib/databases.json';
-	import { cursor, db, prevCursors } from '$lib/stores.js';
-	import { page } from '$lib/stores';
+	import { cursor, prevCursors } from '$lib/stores.js';
+	import { page as pg } from '$lib/stores';
+	import { goto } from '$app/navigation';
 
 	export let data;
-	let selectedDb = '';
+	let selectedDb = $page.url.searchParams.has("db") ? $page.url.searchParams.get("db"): databases[0].id
 	let nextCursor: null | string = null;
 	let currentPage = 0;
 
-	db.subscribe((value) => {
-		selectedDb = value;
-	});
-
-	page.subscribe((value) => {
+	pg.subscribe((value) => {
 		currentPage = value;
 	});
 
@@ -31,6 +29,7 @@
 		},
 	});
 
+	// let queryParam = new URLSearchParams(window.location.search)
 	let selected = '';
 	const mutation = createMutation({
 		mutationKey: ['update-schedule', selected, selectedDb],
@@ -60,8 +59,8 @@
 	};
 
 	const handleDbChange = (e: any) => {
-		db.set(e.target.value);
-		page.reset();
+		goto(`?db=${e.target.value}`)
+		pg.reset();
 		prevCursors.reset();
 		cursor.reset();
 	};
@@ -81,7 +80,7 @@
 			</p>
 			<div class="flex flex-col gap-4">
 				<div class="flex flex-row justify-start w-[50%] gap-20">
-					<select class="select select-bordered w-full select-sm" on:change={handleDbChange}>
+					<select class="select select-bordered w-full select-sm" on:change={handleDbChange} bind:value={selectedDb}>
 						{#each databases as database}
 							<option value={database.id}>{database.label}</option>
 						{/each}
@@ -144,7 +143,7 @@
 							? cursor.set($prevCursors[$prevCursors.length - 1])
 							: cursor.set(null);
 						prevCursors.pop();
-						page.decrement();
+						pg.decrement();
 					}}>«</button
 				>
 				<button class="join-item btn">Page {currentPage}</button>
@@ -155,7 +154,7 @@
 							prevCursors.push($cursor);
 						}
 						cursor.set($query.data?.pagination.next_cursor);
-						page.increment();
+						pg.increment();
 					}}>»</button
 				>
 			</div>

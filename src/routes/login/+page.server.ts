@@ -4,10 +4,10 @@ import type { PageServerLoad } from '../$types';
 
 export const actions = {
 	auth: async () => {
-		const url = oAuthClient.generateAuthUrl({
+		const authUrl = oAuthClient.generateAuthUrl({
 			scope: ['email'],
 		});
-		throw redirect(302, url);
+		throw redirect(302, authUrl);
 	},
 };
 

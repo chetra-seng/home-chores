@@ -1,8 +1,11 @@
 import { env } from '$env/dynamic/private';
+import { env as envPub } from '$env/dynamic/public';
 import { Client, isFullPageOrDatabase } from '@notionhq/client';
 import { OAuth2Client } from 'google-auth-library';
 import moment from 'moment';
 import EventEmitter from 'events';
+import { sendMessage } from './telegram';
+import databases from './databases.json';
 
 /**
  * * Used to triggered specific events such as update operation
@@ -59,7 +62,10 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 			const dateProps = result.properties['Completed Date'];
 			const doneProps = result.properties['Done'];
 			const updatedByProps = result.properties['Updated by'];
-			const updated = updatedByProps.type === "rich_text" && updatedByProps.rich_text instanceof Array && updatedByProps.rich_text[0]
+			const updated =
+				updatedByProps.type === 'rich_text' &&
+				updatedByProps.rich_text instanceof Array &&
+				updatedByProps.rich_text[0];
 
 			return {
 				id: result.id,
@@ -69,7 +75,7 @@ const getChoreSchedules = async (dbId: string, cursor: string) => {
 						: '',
 				date: dateProps.type === 'date' ? dateProps.date?.start : null,
 				completed: doneProps.type === 'checkbox' && doneProps.checkbox ? true : false,
-				updatedBy: updated? updated.plain_text : ""
+				updatedBy: updated ? updated.plain_text : '',
 			};
 		}
 	});
@@ -112,9 +118,9 @@ const updateSchedule = async (dbId: string, pageId: string, name: string) => {
 					// @ts-ignore
 					rich_text: [
 						{
-							type: "text",
+							type: 'text',
 							text: {
-								content: name
+								content: name,
 							},
 						},
 					],
@@ -196,6 +202,16 @@ eventEmitter.on('scheduleUpdated', async (e: { dbId: string; name: string }) => 
 			},
 		},
 	});
+	const dbName = databases.find((db) => db.id === e.dbId)?.label;
+	const message = `🎉🎉🎉 Congratulation, ${e.name} has completed ${dbName}. Please view the 🗓️ schedule below:`;
+	const option = encodeURIComponent(
+		JSON.stringify({
+			inline_keyboard: [
+				[{ text: `${dbName} schedule`, url: `${envPub.PUBLIC_BASE_URL}?db=${e.dbId}` }],
+			],
+		})
+	);
+	await sendMessage(message, option);
 
 	console.info(`New page created id=${newPage.id}`);
 });
